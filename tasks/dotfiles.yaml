@@ -1,5 +1,7 @@
 - name: Setup dotfiles
   block:
+    - name: Start ssh-agent in the background
+      shell: eval $(ssh-agent -s) && ssh-add "{{ dest_key }}"
     - name: Clone dotfiles
       git:
         repo: git@github.com:hashem78/dotfiles.git
