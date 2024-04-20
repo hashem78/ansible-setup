@@ -1,6 +1,9 @@
 ---
 - name: Setup machine
   hosts: localhost
+  vars:
+    source_key: "./.ssh/personal-mythi"
+    dest_key: "{{ lookup('env', 'HOME') }}/.ssh/personal-mythi"
   pre_tasks:
   - name: Update Apt
     become: true
