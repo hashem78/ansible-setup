@@ -19,7 +19,9 @@ sudo -H -u mythi bash -c 'pip3 install ansible'
 echo 'export PATH=$PATH:/home/mythi/.local/bin' >> /home/mythi/.bashrc
 
 # Switch to the user mythi
-su - mythi
+su mythi
+
+cd /home/mythi/
 
 # Clone this repo
 git clone https://github.com/hashem78/ansible-setup.git
