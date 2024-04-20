@@ -1,5 +1,6 @@
 ---
 - name: Install Packages
+  become: true
   package:
     name: [ unzip, curl, wget, build-essential, git, python3, stow, ripgrep, tmux ]
 
