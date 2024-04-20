@@ -1,13 +1,4 @@
 ---
-- name: Add user to sudoers list
-  lineinfile:
-    path: "/etc/sudoers.d/{{ ansible_user }}"
-    line: "{{ ansible_user }} ALL=(ALL) NOPASSWD: ALL"
-    state: present
-    mode: 0440
-    create: yes
-    validate: 'visudo -cf %s'
-
 - name: Install Packages
   package:
     name: [ unzip, curl, wget, build-essential, git, python3, stow, ripgrep, tmux ]

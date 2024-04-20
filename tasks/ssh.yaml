@@ -1,4 +1,7 @@
 - name: Ensure .ssh directory exists.
+  vars:
+    source_key: "./.ssh/personal-mythi"
+    dest_key: "{{ lookup('env', 'HOME') }}/.ssh/personal-mythi"
   file:
     dest: "{{ dest_key | dirname }}"
     mode: 0700
