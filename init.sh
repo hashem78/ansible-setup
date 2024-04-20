@@ -18,3 +18,6 @@ sudo -H -u mythi bash -c 'pip3 install ansible'
 
 # Switch to the user mythi
 su - mythi
+
+# Clone this repo
+git clone https://github.com/hashem78/ansible-setup.git
