@@ -1,13 +1,9 @@
 - name: Git setup email
-  become: true
-  become_user: mythi
   git_config:
     name: user.email
     scope: global
     value: "hashem.olayano@gmail.com"
 - name: Git setup name
-  become: true
-  become_user: mythi
   git_config:
     name: user.name
     scope: global
