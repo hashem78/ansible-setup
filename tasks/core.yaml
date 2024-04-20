@@ -1,0 +1,25 @@
+---
+- name: Add user to sudoers list
+  lineinfile:
+    path: "/etc/sudoers.d/{{ ansible_user }}"
+    line: "{{ ansible_user }} ALL=(ALL) NOPASSWD: ALL"
+    state: present
+    mode: 0440
+    create: yes
+    validate: 'visudo -cf %s'
+
+- name: Install Packages
+  package:
+    name: [ unzip, curl, wget, build-essential, git, python3, stow, ripgrep, tmux ]
+
+- name: Install rustup
+  shell: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+
+- name: Install Rust packages
+  environment: 
+    PATH: "{{ ansible_env.PATH }}:{{ lookup('env', 'HOME') }}/.cargo/bin"
+  block:
+    - name: Install bob-nvim
+      shell: cargo install --git https://github.com/MordechaiHadad/bob.git
+    - name: Install latest nvim
+      shell: bob use latest

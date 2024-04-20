@@ -1,0 +1,16 @@
+---
+- name: Setup machine
+  hosts: localhost
+  pre_tasks:
+  - name: Update Apt
+    become: true
+    apt:
+      force_apt_get: true
+      update_cache: true
+      state: present
+  tasks:
+    - import_tasks: tasks/ssh.yaml 
+    - import_tasks: tasks/core.yaml
+    - import_tasks: tasks/dotfiles.yaml
+    - import_tasks: tasks/git.yaml
+    - import_tasks: tasks/font.yaml
