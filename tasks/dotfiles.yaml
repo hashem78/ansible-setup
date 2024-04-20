@@ -3,11 +3,11 @@
     - name: Clone dotfiles
       git:
         repo: git@github.com:hashem78/dotfiles.git
-        dest: "{{ lookup('env', 'HOME') }}"
+        dest: "{{ lookup('env', 'HOME') }}/dotfiles"
         clone: yes
         recursive: yes
         update: yes
         accept_hostkey: yes
         version: main
     - name: Stow files
-      shell: cd $HOME/dotfiles && ./stow
+      shell: cd "{{ lookup('env', 'HOME') }}/dotfiles" && stow .

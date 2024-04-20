@@ -2,16 +2,23 @@
 - name: Install Packages
   become: true
   package:
-    name: [ unzip, curl, wget, build-essential, git, python3, stow, ripgrep, tmux ]
+    name: [ unzip, curl, wget, build-essential, git, python3, stow, ripgrep, tmux, fontconfig ]
 
 - name: Install rustup
   shell: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 - name: Install Rust packages
   environment: 
-    PATH: "{{ ansible_env.PATH }}:{{ lookup('env', 'HOME') }}/.cargo/bin"
+    PATH: "{{ ansible_env.PATH }}:{{ lookup('env', 'HOME') }}/.cargo/bin:{{ lookup('env', 'HOME') }}/.local/share/bob/nvim-bin"
   block:
     - name: Install bob-nvim
       shell: cargo install --git https://github.com/MordechaiHadad/bob.git
     - name: Install latest nvim
       shell: bob use latest
+    - name: Append directory to PATH variable
+      ansible.builtin.lineinfile:
+        path: "{{ lookup('env', 'HOME') }}/.bashrc"
+        line: 'export PATH=$PATH:{{ lookup("env","HOME") }}/.local/share/bob/nvim-bin'
+        insertafter: EOF
+      become: yes
+      become_user: mythi

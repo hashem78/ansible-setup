@@ -4,9 +4,18 @@
       get_url:
         url: https://download.jetbrains.com/fonts/JetBrainsMono-2.304.zip
         dest: "{{ lookup('env', 'HOME') }}"
+    - name: Check if directory exists
+      stat:
+        path: "{{ lookup('env', 'HOME') }}/.local/share/fonts" 
+      register: dir_check
+    - name: Make sure font dir exists
+      file:
+        path: "{{ lookup('env', 'HOME') }}/.local/share/fonts" 
+        state: directory
+      when: not dir_check.stat.exists
     - name: Unzip font
       unarchive:
         src: "{{ lookup('env', 'HOME') }}/JetBrainsMono-2.304.zip"
-        dest: "{{ lookup('env', 'HOME') }}/local/share/fonts"
+        dest: "{{ lookup('env', 'HOME') }}/.local/share/fonts"
     - name: Clear font cache
       shell: "fc-cache -f -v"
