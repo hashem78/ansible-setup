@@ -1,6 +1,6 @@
 #!/bin/bash
 
-adduser --disabled-password --comment "" mythi
+adduser --disabled-password --gecos "" mythi
 adduser mythi sudo
 apt update
 apt install -y sudo python3 python3-pip git
