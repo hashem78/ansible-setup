@@ -2,11 +2,11 @@
   block:
     - name: Download font
       get_url:
-        url: https://download.jetbrains.com/fonts/JetBrainsMono-2.304.zip
+        url: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/JetBrainsMono.zip
         dest: "{{ lookup('env', 'HOME') }}"
     - name: Unzip font
       unarchive:
-        src: "{{ lookup('env', 'HOME') }}/JetBrainsMono-2.304.zip"
+        src: "{{ lookup('env', 'HOME') }}/JetBrainsMono.zip"
         dest: "{{ lookup('env', 'HOME') }}/.local/share/"
     - name: Clear font cache
       shell: "fc-cache -f -v"
