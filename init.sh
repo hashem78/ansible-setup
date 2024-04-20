@@ -5,7 +5,7 @@ apt-get update
 apt-get install -y sudo
 
 # Create the user mythi with password 'password'
-useradd -m -p 'password' -s /bin/bash mythi
+useradd -m -p '$y$j9T$Tzm8HVr66WHce3gssjOAs1$8U4YBva8dKLrleee34ftMfyQ20If4PYqZu0WdIYx2w1' -s /bin/bash mythi
 
 # Add the user mythi to the sudo group
 usermod -aG sudo mythi
