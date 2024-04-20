@@ -2,6 +2,11 @@
   block:
     - name: Start ssh-agent in the background
       shell: eval $(ssh-agent -s) && ssh-add "{{ dest_key }}"
+    - name: Add ssh startup to bashrc
+      ansible.builtin.lineinfile:
+        path: "{{ lookup('env', 'HOME') }}/.bashrc"
+        line: "eval $(ssh-agent -s) && ssh-add {{ dest_key }}" 
+        insertafter: EOF
     - name: Clone dotfiles
       git:
         repo: git@github.com:hashem78/dotfiles.git
