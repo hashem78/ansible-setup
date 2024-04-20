@@ -1,10 +1,8 @@
 #!/bin/bash
 
-adduser --disabled-password --gecos "" mythi
+useradd -m -p "$y$j9T$Tzm8HVr66WHce3gssjOAs1$8U4YBva8dKLrleee34ftMfyQ20If4PYqZu0WdIYx2w1" -s /bin/bash mythi
 adduser mythi sudo
-apt update
-apt install -y sudo python3 python3-pip git
+sudo -H -u mythi apt update
+sudo -H -u mythi apt install -y sudo python3 python3-pip git
+sudo -H -u mythi bash -c 'pip3 install ansible' 
 su mythi
-pip3 install ansible
-cd /home/mythi/
-git clone https://github.com/hashem78/ansible-setup
