@@ -4,9 +4,14 @@
       get_url:
         url: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/JetBrainsMono.zip
         dest: "{{ lookup('env', 'HOME') }}"
+    - name: Create fonts directory
+      ansible.builtin.file:
+        path: "{{ lookup('env', 'HOME') }/.local/share/fonts"
+        state: directory
+        mode: "0755"
     - name: Unzip font
       unarchive:
         src: "{{ lookup('env', 'HOME') }}/JetBrainsMono.zip"
-        dest: "{{ lookup('env', 'HOME') }}/.local/share/"
+        dest: "{{ lookup('env', 'HOME') }}/.local/share/fonts"
     - name: Clear font cache
       shell: "fc-cache -f -v"
