@@ -6,7 +6,7 @@
         dest: "{{ lookup('env', 'HOME') }}"
     - name: Create fonts directory
       ansible.builtin.file:
-        path: "{{ lookup('env', 'HOME') }/.local/share/fonts"
+        path: "{{ lookup('env', 'HOME') }}/.local/share/fonts"
         state: directory
         mode: "0755"
     - name: Unzip font
