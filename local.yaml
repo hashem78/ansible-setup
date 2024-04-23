@@ -18,4 +18,4 @@
     - import_tasks: tasks/dotfiles.yaml
     - import_tasks: tasks/font.yaml
     - import_tasks: tasks/node.yaml
-    - import_tasts: tasks/fzf.yaml
+    - import_tasks: tasks/fzf.yaml
