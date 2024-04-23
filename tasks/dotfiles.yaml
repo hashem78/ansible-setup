@@ -17,11 +17,9 @@
         version: main
     - name: Clone tmux tpm
       git:
-        repo: git@github.com/tmux-plugins/tpm.git
+        repo: https://github.com/tmux-plugins/tpm.git
         dest: "{{ lookup('env', 'HOME') }}/.tmux/plugins/tpm"
-        key_file: "{{ dest_key }}"
         clone: yes
-        accept_hostkey: yes
         version: main
     - name: Stow files
       shell: cd "{{ lookup('env', 'HOME') }}/dotfiles" && stow .
