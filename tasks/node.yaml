@@ -3,5 +3,5 @@
 
 - name: Set default node version to 20
   environment: 
-    PATH: "{{ ansible_env.PATH }}:{{ lookup('env', 'HOME') }}/.local/share/fnm"
+    PATH: "{{ lookup('env', 'HOME') }}/.local/share/fnm"
   shell: "fnm install 20 && fnm default 20"
