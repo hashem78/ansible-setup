@@ -13,8 +13,14 @@
         dest: "{{ lookup('env', 'HOME') }}/dotfiles"
         key_file: "{{ dest_key }}"
         clone: yes
-        recursive: yes
-        update: yes
+        accept_hostkey: yes
+        version: main
+    - name: Clone tmux tpm
+      git:
+        repo: git@github.com/tmux-plugins/tpm.git
+        dest: "{{ lookup('env', 'HOME') }}/.tmux/plugins/tpm"
+        key_file: "{{ dest_key }}"
+        clone: yes
         accept_hostkey: yes
         version: main
     - name: Stow files
