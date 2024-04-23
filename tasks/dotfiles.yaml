@@ -20,6 +20,6 @@
         repo: https://github.com/tmux-plugins/tpm.git
         dest: "{{ lookup('env', 'HOME') }}/.tmux/plugins/tpm"
         clone: yes
-        version: main
+        version: master
     - name: Stow files
       shell: cd "{{ lookup('env', 'HOME') }}/dotfiles" && stow .
