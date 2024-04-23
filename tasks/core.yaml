@@ -5,7 +5,7 @@
     name: [ unzip, curl, wget, build-essential, git, python3, stow, ripgrep, tmux, fontconfig ]
 
 - name: Install rustup
-  shell: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+  shell: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
 
 - name: Install Rust packages
   environment: 
