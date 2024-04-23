@@ -1,0 +1,14 @@
+---
+- name: Clone fzf
+  git:
+    repo: git@github.com:junegunn/fzf.git
+    dest: "{{ lookup('env', 'HOME') }}/.fzf"
+    key_file: "{{ dest_key }}"
+    clone: yes
+    accept_hostkey: yes
+    version: master
+    depth: 1
+- name: Install fzf
+  shell: "$HOME/.fzf/install" 
+  become: true
+  become_user: mythi
