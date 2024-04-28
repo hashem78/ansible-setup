@@ -8,3 +8,13 @@
     name: user.name
     scope: global
     value: "hashem78"
+- name: Git make editor nvim
+  git_config:
+    name: core.editor
+    scope: global
+    value: "nvim"
+- name: Git make default branch main
+  git_config:
+    name: init.defaultBranch 
+    scope: global
+    value: "main"
