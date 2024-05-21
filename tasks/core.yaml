@@ -4,6 +4,12 @@
   package:
     name: [ unzip, curl, wget, build-essential, git, python3, stow, ripgrep, tmux, fontconfig ]
 
+- name: Append to bash history after each command
+  ansible.builtin.lineinfile:
+    path: "{{ lookuo('env', 'HOME') }}/.bashrc"
+    line:  'export PROMPT_COMMAND="history -a; history -n"'
+    insertafter: EOF
+
 - name: Install rustup
   shell: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
 
