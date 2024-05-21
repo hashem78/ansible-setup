@@ -26,5 +26,5 @@
         path: "{{ lookup('env', 'HOME') }}/.bashrc"
         line: 'export PATH=$PATH:{{ lookup("env","HOME") }}/.local/share/bob/nvim-bin'
         insertafter: EOF
-      become: yes
+      become: true
       become_user: mythi
