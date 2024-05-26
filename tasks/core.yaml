@@ -2,7 +2,7 @@
 - name: Install Packages
   become: true
   package:
-    name: [ unzip, curl, wget, build-essential, git, python3, stow, ripgrep, tmux, fontconfig ]
+    name: [ unzip, curl, wget, build-essential, git, python3, stow, ripgrep, tmux, fontconfig, jq ]
 
 - name: Append to bash history after each command
   ansible.builtin.lineinfile:
