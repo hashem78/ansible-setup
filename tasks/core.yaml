@@ -6,7 +6,7 @@
 
 - name: Append to bash history after each command
   ansible.builtin.lineinfile:
-    path: "{{ lookuo('env', 'HOME') }}/.bashrc"
+    path: "{{ lookup('env', 'HOME') }}/.bashrc"
     line:  'export PROMPT_COMMAND="history -a; history -n"'
     insertafter: EOF
 
