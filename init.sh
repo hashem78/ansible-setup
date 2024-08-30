@@ -17,6 +17,7 @@ sudo -H -u mythi bash -c 'sudo apt-get update && sudo apt-get install -y python3
 sudo -H -u mythi bash -c 'pip3 install ansible'
 
 echo 'export PATH=$PATH:/home/mythi/.local/bin' >> /home/mythi/.bashrc
+echo 'set -o vi' >> /home/mythi/.bashrc
 
 # Switch to the user mythi
 su mythi
