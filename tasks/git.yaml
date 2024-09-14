@@ -1,20 +1,37 @@
-- name: Git setup email
-  git_config:
-    name: user.email
-    scope: global
-    value: "hashem.olayano@gmail.com"
-- name: Git setup name
-  git_config:
-    name: user.name
-    scope: global
-    value: "hashem78"
-- name: Git make editor nvim
-  git_config:
-    name: core.editor
-    scope: global
-    value: "nvim"
-- name: Git make default branch main
-  git_config:
-    name: init.defaultBranch 
-    scope: global
-    value: "main"
+---
+- name: Git configuration
+  become: true
+  become_user: mythi
+  vars:
+    mythi_home: "/home/mythi"
+  block:
+    - name: Git setup email
+      git_config:
+        name: user.email
+        scope: global
+        value: "hashem.olayano@gmail.com"
+
+    - name: Git setup name
+      git_config:
+        name: user.name
+        scope: global
+        value: "hashem78"
+
+    - name: Git make editor nvim
+      git_config:
+        name: core.editor
+        scope: global
+        value: "nvim"
+
+    - name: Git make default branch main
+      git_config:
+        name: init.defaultBranch 
+        scope: global
+        value: "main"
+
+    - name: Ensure .gitconfig has correct ownership
+      file:
+        path: "{{ mythi_home }}/.gitconfig"
+        owner: mythi
+        group: mythi
+        mode: '0644'

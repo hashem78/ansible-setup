@@ -1,15 +1,50 @@
-- name: Ensure .ssh directory exists.
-  file:
-    dest: "{{ dest_key | dirname }}"
-    mode: 0700
-    state: directory
-- name: Install ssh key
-  copy:
-    src: "{{ source_key }}"
-    dest: "{{ dest_key }}"
-    mode: 0600
-- name: Install ssh key public
-  copy:
-    src: "{{ source_key }}.pub"
-    dest: "{{ dest_key }}.pub"
-    mode: 0644
+---
+- name: SSH key setup
+  become: true
+  become_user: mythi
+  vars:
+    mythi_home: "/home/mythi"
+  block:
+    - name: Ensure .ssh directory exists
+      file:
+        path: "{{ mythi_home }}/.ssh"
+        mode: 0700
+        state: directory
+        owner: mythi
+        group: mythi
+
+    - name: Install ssh private key
+      copy:
+        src: "{{ source_key }}"
+        dest: "{{ dest_key }}"
+        mode: 0600
+        owner: mythi
+        group: mythi
+        decrypt: true
+
+    - name: Install ssh public key
+      copy:
+        src: "{{ source_key }}.pub"
+        dest: "{{ dest_key }}.pub"
+        mode: 0644
+        owner: mythi
+        group: mythi
+
+    - name: Add SSH key to ssh-agent
+      shell: |
+        eval $(ssh-agent -s)
+        ssh-add {{ dest_key }}
+      args:
+        executable: /bin/bash
+      environment:
+        SSH_AUTH_SOCK: /tmp/ssh-agent-mythi.socket
+
+    - name: Ensure ssh-agent is started on login
+      lineinfile:
+        path: "{{ mythi_home }}/.bashrc"
+        line: |
+          if [ -z "$SSH_AUTH_SOCK" ]; then
+             eval $(ssh-agent -s)
+             ssh-add {{ dest_key }}
+          fi
+        state: present

@@ -1,20 +1,42 @@
 ---
-- name: Setup machine
-  hosts: localhost
+- name: Initial setup and user creation
+  hosts: linode
+  remote_user: root
+  tasks:
+    - name: Update Apt
+      apt:
+        force_apt_get: true
+        update_cache: true
+        state: present
+
+    - name: Create user mythi
+      user:
+        name: mythi
+        state: present
+        groups: sudo
+        shell: /bin/bash
+        create_home: yes
+
+    - name: Set up authorized keys for mythi user
+      authorized_key:
+        user: mythi
+        state: present
+        key: "{{ lookup('file', './.ssh/personal-mythi.pub') }}"
+  #
+- name: Setup machine for mythi user
+  hosts: linode
+  remote_user: mythi
+  become: yes
+  become_user: mythi
   vars:
     source_key: "./.ssh/personal-mythi"
-    dest_key: "{{ lookup('env', 'HOME') }}/.ssh/personal-mythi"
-  pre_tasks:
-  - name: Update Apt
-    become: true
-    apt:
-      force_apt_get: true
-      update_cache: true
-      state: present
+    dest_key: "/home/mythi/.ssh/personal-mythi"
   tasks:
     - import_tasks: tasks/core.yaml
     - import_tasks: tasks/ssh.yaml 
     - import_tasks: tasks/git.yaml
     - import_tasks: tasks/dotfiles.yaml
+    - import_tasks: tasks/node.yaml
     - import_tasks: tasks/font.yaml
+    - import_tasks: tasks/bat.yaml
     - import_tasks: tasks/fzf.yaml

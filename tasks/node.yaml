@@ -1,7 +1,46 @@
-- name: Install fnm
-  shell: curl -fsSL https://fnm.vercel.app/install | bash
+---
+- name: Node.js setup with fnm
+  become: true
+  become_user: mythi
+  vars:
+    mythi_home: "/home/mythi"
+  block:
+    # - name: check user
+    #   become: true
+    #   become_user: mythi
+    #   become_method: su
+    #   become_flags: '--login'
+    #   shell: whoami
 
-- name: Set default node version to 20
-  environment: 
-    PATH: "{{ lookup('env', 'HOME') }}/.local/share/fnm"
-  shell: "fnm install 20 && fnm default 20"
+    - name: Install fnm
+      become_user: mythi
+      remote_user: mythi
+      shell: curl -fsSL https://fnm.vercel.app/install | bash -s -- --install-dir "{{ mythi_home }}/.fnm"
+      args:
+        creates: "{{ mythi_home }}/.fnm/fnm"
+        executable: /bin/bash
+      environment:
+        HOME: "{{ mythi_home }}"
+
+    - name: Add fnm to .bashrc
+      lineinfile:
+        path: "{{ mythi_home }}/.bashrc"
+        line: 'eval "$(fnm env --use-on-cd)"'
+        state: present
+
+    - name: Set default node version to 20
+      shell: "{{ mythi_home }}/.fnm/fnm install 20 && {{ mythi_home }}/.fnm/fnm default 20"
+      args:
+        executable: /bin/bash
+      environment:
+        PATH: "{{ mythi_home }}/.fnm:{{ ansible_env.PATH }}"
+        HOME: "{{ mythi_home }}"
+
+    - name: Verify Node.js installation
+      shell: "{{ mythi_home }}/.fnm/fnm exec --using=20 -- node --version"
+      register: node_version
+      changed_when: false
+
+    - name: Display Node.js version
+      debug:
+        var: node_version.stdout

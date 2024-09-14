@@ -1,25 +1,21 @@
 ---
-- name: Install Bat
+- name: Bat installation and configuration
   become: true
-  package:
-    name: [ bat ]
-
-- name: Ensure ~/.local/bin directory exists and create a symlink for batcat (work around)
+  become_user: mythi
+  vars:
+    mythi_home: "/home/mythi"
   block:
-    - name: Create the ~/.local/bin directory
-      file:
-        path: "{{ ansible_env.HOME }}/.local/bin"
-        state: directory
-        mode: '0755'
+  - name: Install the .deb package for from the internet (github)
+    become: true
+    become_user: root
+    ansible.builtin.apt:
+      deb: https://github.com/sharkdp/bat/releases/download/v0.24.0/bat_0.24.0_amd64.deb
 
-    - name: Create a symlink from /usr/bin/batcat to ~/.local/bin/bat
-      file:
-        src: /usr/bin/batcat
-        dest: "{{ ansible_env.HOME }}/.local/bin/bat"
-        state: link
+  - name: Set alias for fzf with bat preview
+    lineinfile:
+      path: "{{ mythi_home }}/.bashrc"
+      line: 'alias fzfp="fzf --preview \"bat --color=always --style=numbers --line-range=:500 {}\""'
+      create: yes
+      owner: mythi
+      group: mythi
 
-- name: Set alias for fzf with bat preview
-  lineinfile:
-    path: "{{ ansible_env.HOME }}/.bashrc"
-    line: 'alias fzfp="fzf --preview \\"bat --color=always --style=numbers --line-range=:500 {}\\""'
-    create: yes

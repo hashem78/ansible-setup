@@ -1,12 +1,27 @@
 ---
-- name: Clone fzf
-  git:
-    repo: https://github.com/junegunn/fzf.git
-    dest: "{{ lookup('env', 'HOME') }}/.fzf"
-    clone: yes
-    version: master
-    depth: 1
 - name: Install fzf
-  shell: "$HOME/.fzf/install" 
   become: true
   become_user: mythi
+  vars:
+    mythi_home: "/home/mythi"
+  block:
+    - name: Clone fzf
+      git:
+        repo: https://github.com/junegunn/fzf.git
+        dest: "{{ mythi_home }}/.fzf"
+        clone: yes
+        version: master
+        depth: 1
+
+    - name: Install fzf
+      shell: "{{ mythi_home }}/.fzf/install --all"
+      args:
+        creates: "{{ mythi_home }}/.fzf/bin/fzf"
+      environment:
+        HOME: "{{ mythi_home }}"
+
+    - name: Ensure fzf configuration in .bashrc
+      lineinfile:
+        path: "{{ mythi_home }}/.bashrc"
+        line: '[ -f ~/.fzf.bash ] && source ~/.fzf.bash'
+        state: present

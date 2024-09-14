@@ -1,25 +1,47 @@
+---
 - name: Setup dotfiles
+  become: true
+  become_user: mythi
+  vars:
+    mythi_home: "/home/mythi"
   block:
     - name: Start ssh-agent in the background
       shell: eval $(ssh-agent -s) && ssh-add "{{ dest_key }}"
+      environment:
+        HOME: "{{ mythi_home }}"
+
     - name: Add ssh startup to bashrc
       ansible.builtin.lineinfile:
-        path: "{{ lookup('env', 'HOME') }}/.bashrc"
-        line: "eval $(ssh-agent -s) && ssh-add {{ dest_key }}" 
+        path: "{{ mythi_home }}/.bashrc"
+        line: "eval $(ssh-agent -s) && ssh-add {{ dest_key }}"
         insertafter: EOF
+        create: yes
+        owner: mythi
+        group: mythi
+
     - name: Clone dotfiles
       git:
         repo: git@github.com:hashem78/dotfiles.git
-        dest: "{{ lookup('env', 'HOME') }}/dotfiles"
+        dest: "{{ mythi_home }}/dotfiles"
         key_file: "{{ dest_key }}"
         clone: yes
         accept_hostkey: yes
         version: main
+      become: true
+      become_user: mythi
+
     - name: Clone tmux tpm
       git:
         repo: https://github.com/tmux-plugins/tpm.git
-        dest: "{{ lookup('env', 'HOME') }}/.tmux/plugins/tpm"
+        dest: "{{ mythi_home }}/.tmux/plugins/tpm"
         clone: yes
         version: master
+      become: true
+      become_user: mythi
+
     - name: Stow files
-      shell: cd "{{ lookup('env', 'HOME') }}/dotfiles" && stow .
+      shell: cd "{{ mythi_home }}/dotfiles" && stow .
+      become: true
+      become_user: mythi
+      environment:
+        HOME: "{{ mythi_home }}"

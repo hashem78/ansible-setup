@@ -1,17 +1,41 @@
+---
 - name: Install JetBrains Mono
+  become: true
+  become_user: mythi
+  vars:
+    mythi_home: "/home/mythi"
   block:
     - name: Download font
       get_url:
         url: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/JetBrainsMono.zip
-        dest: "{{ lookup('env', 'HOME') }}"
+        dest: "{{ mythi_home }}"
+        owner: mythi
+        group: mythi
+        mode: '0644'
+
     - name: Create fonts directory
       ansible.builtin.file:
-        path: "{{ lookup('env', 'HOME') }}/.local/share/fonts"
+        path: "{{ mythi_home }}/.local/share/fonts"
         state: directory
         mode: "0755"
+        owner: mythi
+        group: mythi
+
     - name: Unzip font
       unarchive:
-        src: "{{ lookup('env', 'HOME') }}/JetBrainsMono.zip"
-        dest: "{{ lookup('env', 'HOME') }}/.local/share/fonts"
+        remote_src: true
+        src: "{{ mythi_home }}/JetBrainsMono.zip"
+        dest: "{{ mythi_home }}/.local/share/fonts"
+        owner: mythi
+        group: mythi
+        mode: '0644'
+
     - name: Clear font cache
       shell: "fc-cache -f -v"
+      environment:
+        HOME: "{{ mythi_home }}"
+
+    - name: Remove downloaded zip file
+      file:
+        path: "{{ mythi_home }}/JetBrainsMono.zip"
+        state: absent
