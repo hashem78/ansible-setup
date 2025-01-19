@@ -36,7 +36,7 @@
 - name: Add local scripts to path
   ansible.builtin.lineinfile:
     path: "{{ mythi_home }}/.bashrc"
-    line: 'PATH="$PATH":"$HOME/.local/scripts/"'
+    line: 'export PATH="$PATH":"$HOME/.local/scripts/"'
     insertafter: EOF
     create: yes
     owner: mythi
