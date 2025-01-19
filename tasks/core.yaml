@@ -42,6 +42,15 @@
     owner: mythi
     group: mythi
 
+- name: Add tmux-sessionizer binding
+  ansible.builtin.lineinfile:
+    path: "{{ mythi_home }}/.bashrc"
+    line: 'bindkey -s ^f "tmux-sessionizer\n"'
+    insertafter: EOF
+    create: yes
+    owner: mythi
+    group: mythi
+
 - name: Install rustup for mythi user
   become: true
   become_user: mythi
