@@ -33,10 +33,9 @@
     dest_key: "/home/mythi/.ssh/personal-mythi"
   tasks:
     - import_tasks: tasks/core.yaml
-    - import_tasks: tasks/ssh.yaml 
+    - import_tasks: tasks/ssh.yaml
     - import_tasks: tasks/git.yaml
     - import_tasks: tasks/dotfiles.yaml
     - import_tasks: tasks/node.yaml
     - import_tasks: tasks/font.yaml
-    - import_tasks: tasks/bat.yaml
     - import_tasks: tasks/fzf.yaml

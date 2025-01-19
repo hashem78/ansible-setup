@@ -83,6 +83,29 @@
         owner: mythi
         group: mythi
 
+    - name: Install bat
+      shell: cargo install bat --locked
+      args:
+        creates: /home/mythi/.cargo/bin/bat
+
+    - name: Add zoxide eval to bashrc
+      ansible.builtin.lineinfile:
+        path: "{{ mythi_home }}/.bashrc"
+        line: 'eval "$(bat --completion bash)"'
+        insertafter: EOF
+        create: yes
+        owner: mythi
+        group: mythi
+
+    - name: Set alias for fzf with bat preview
+      lineinfile:
+        path: "{{ mythi_home }}/.bashrc"
+        line: 'alias fzfp="fzf --preview \"bat --color=always --style=numbers --line-range=:500 {}\""'
+        create: yes
+        insertafter: EOF
+        owner: mythi
+        group: mythi
+
     - name: Install latest nvim
       shell: bob use latest
       args:
