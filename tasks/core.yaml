@@ -3,7 +3,27 @@
   become: true
   become_user: root
   package:
-    name: [ unzip, curl, wget, build-essential, git, python3, python3-venv, stow, ripgrep, tmux, fontconfig, jq, cmake, pkg-config, libfreetype6-dev, libfontconfig1-dev, libxcb-xfixes0-dev, libxkbcommon-dev ]
+    name:
+      [
+        unzip,
+        curl,
+        wget,
+        build-essential,
+        git,
+        python3,
+        python3-venv,
+        stow,
+        ripgrep,
+        tmux,
+        fontconfig,
+        jq,
+        cmake,
+        pkg-config,
+        libfreetype6-dev,
+        libfontconfig1-dev,
+        libxcb-xfixes0-dev,
+        libxkbcommon-dev,
+      ]
 
 - name: Append to bash history after each command
   ansible.builtin.lineinfile:
@@ -23,13 +43,27 @@
 - name: Install Rust packages
   become: true
   become_user: mythi
-  environment: 
+  environment:
     PATH: "/home/mythi/.cargo/bin:/home/mythi/.local/share/bob/nvim-bin:{{ ansible_env.PATH }}"
   block:
     - name: Install bob-nvim
       shell: cargo install --git https://github.com/MordechaiHadad/bob.git
       args:
         creates: /home/mythi/.cargo/bin/bob
+
+    - name: Install zoxide
+      shell: cargo install zoxide --locked
+      args:
+        creates: /home/mythi/.cargo/bin/zoxide
+
+    - name: Add zoxide eval to bashrc
+      ansible.builtin.lineinfile:
+        path: "{{ mythi_home }}/.bashrc"
+        line: 'eval "$(zoxide init bash)"'
+        insertafter: EOF
+        create: yes
+        owner: mythi
+        group: mythi
 
     - name: Install latest nvim
       shell: bob use latest
@@ -39,7 +73,7 @@
     - name: Append directory to PATH variable
       ansible.builtin.lineinfile:
         path: "/home/mythi/.bashrc"
-        line: 'export PATH=$PATH:$HOME/.local/share/bob/nvim-bin:$HOME/.cargo/bin'
+        line: "export PATH=$PATH:$HOME/.local/share/bob/nvim-bin:$HOME/.cargo/bin"
         create: yes
         owner: mythi
         group: mythi
